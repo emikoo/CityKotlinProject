@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_view">0dp</dimen>
+    <dimen name="height_view">0dp</dimen>
+
+    <dimen name="text_size_btn">16sp</dimen>
+
+    <dimen name="margin_top_rv">8dp</dimen>
+    <dimen name="margin_item">14dp</dimen>
+</resources>
