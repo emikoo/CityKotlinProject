@@ -7,6 +7,9 @@ import retrofit2.http.Path
 
 interface SimpleApi {
 
-    @GET("capital/{city}")
-    fun fetchCity(@Path("city") city: String): Call<MutableList<City>>
+    @GET("name/{country}")
+    fun fetchCity(@Path("country") city: String): Call<MutableList<City>>
+
+    @GET("all")
+    fun fetchAll(): Call<MutableList<City>>
 }
