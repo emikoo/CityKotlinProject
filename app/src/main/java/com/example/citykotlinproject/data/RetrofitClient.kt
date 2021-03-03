@@ -11,7 +11,7 @@ class RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val okHttpClient = OkHttpClient()
+    private val okHttpClient = OkHttpClient() //создать соединение с интернетом
         .newBuilder()
         .addInterceptor(httpLoggingInterceptor)
         .build()

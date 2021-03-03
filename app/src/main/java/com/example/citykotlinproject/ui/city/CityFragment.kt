@@ -1,5 +1,6 @@
 package com.example.citykotlinproject.ui.city
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import com.example.citykotlinproject.R
 import com.example.citykotlinproject.models.City
 import com.example.citykotlinproject.ui.city.adapter.CityAdapter
 import com.example.citykotlinproject.ui.main.MainRepository
+import kotlinx.android.synthetic.main.custom_dialog.*
 import kotlinx.android.synthetic.main.fragment_city.*
 
 
@@ -21,7 +23,9 @@ interface RequestResult {
     fun onSuccess(result: MutableList<City>)
 }
 
-class CityFragment : Fragment(), RequestResult {
+class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
+
+    //исправить ошибку с вьюхолдером
 
     private lateinit var adapter: CityAdapter
     private lateinit var repository: MainRepository
@@ -45,7 +49,7 @@ class CityFragment : Fragment(), RequestResult {
     }
 
     private fun setupRecyclerView() {
-        adapter = CityAdapter()
+        adapter = CityAdapter(this)
         cities_rv.setHasFixedSize(true)
         cities_rv.adapter = adapter
         cities_rv.layoutManager = LinearLayoutManager(requireContext())
@@ -73,8 +77,7 @@ class CityFragment : Fragment(), RequestResult {
                 if (s.toString() == "") {
                     repository.fetchAll()
                 } else {
-                    // perform search
-                    val textl: String = field_et.getText().toString().trim()
+                    val textl: String = field_et.text.toString().trim()
                     repository.fetchCity(textl)
                 }
             }
@@ -88,5 +91,27 @@ class CityFragment : Fragment(), RequestResult {
 
     override fun onSuccess(result: MutableList<City>) {
         adapter.addItems(result)
+    }
+
+    override fun OnItemLongClick(item: City) {
+        showAlertDialog(item)
+    }
+
+    private fun showAlertDialog(item: City) {
+        val alert = AlertDialog.Builder(requireContext())
+        val view: View = layoutInflater.inflate(R.layout.custom_dialog, null)
+        val dialog = alert.create()
+        positive_btn.text = "YES"
+        negative_btn.text = "NO"
+        alert.setView(view)
+            .setCustomTitle(title_dialog)
+            .setCancelable(false)
+        positive_btn.setOnClickListener {
+
+        }
+        negative_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+        alert.show()
     }
 }

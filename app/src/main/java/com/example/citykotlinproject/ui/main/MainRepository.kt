@@ -1,5 +1,6 @@
 package com.example.citykotlinproject.ui.main
 
+import com.example.citykotlinproject.ApplicationCity
 import com.example.citykotlinproject.data.RetrofitClient
 import com.example.citykotlinproject.models.City
 import com.example.citykotlinproject.ui.city.RequestResult
@@ -10,6 +11,7 @@ import retrofit2.Response
 class MainRepository(private val callback: RequestResult) {
 
     private var api = RetrofitClient().simpleApi
+    private var database = ApplicationCity.getDatabase().cityDao()
 
     fun fetchCity(city: String) {
         api.fetchCity(city).enqueue(object: Callback<MutableList<City>> {
@@ -43,6 +45,10 @@ class MainRepository(private val callback: RequestResult) {
                 else callback.onFailure("error")
             }
         })
+    }
+
+    fun fetchFavoriteCity() {
+        callback.onSuccess(database.fetchFavoriteCity())
     }
 
 }
