@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.citykotlinproject.R
 import com.example.citykotlinproject.models.City
 import com.example.citykotlinproject.ui.city.adapter.CityAdapter
+import com.example.citykotlinproject.ui.city.adapter.CityAdapter.Companion.favoriteFragment
 import kotlinx.android.synthetic.main.custom_dialog.*
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
@@ -32,7 +33,7 @@ class FavoriteFragment : Fragment(), CityAdapter.ClickListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = CityAdapter(this)
+        adapter = CityAdapter(this, favoriteFragment)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
     }

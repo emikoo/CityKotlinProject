@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.citykotlinproject.R
 import com.example.citykotlinproject.models.City
 import com.example.citykotlinproject.ui.city.adapter.CityAdapter
+import com.example.citykotlinproject.ui.city.adapter.CityAdapter.Companion.cityFragment
+import com.example.citykotlinproject.ui.city.adapter.EmptyViewHolder
 import com.example.citykotlinproject.ui.main.MainRepository
 import kotlinx.android.synthetic.main.custom_dialog.*
 import kotlinx.android.synthetic.main.fragment_city.*
@@ -49,10 +51,11 @@ class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = CityAdapter(this)
+        adapter = CityAdapter(this, cityFragment)
         cities_rv.setHasFixedSize(true)
         cities_rv.adapter = adapter
         cities_rv.layoutManager = LinearLayoutManager(requireContext())
+
     }
 
     private fun setupRepository() {

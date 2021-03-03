@@ -4,16 +4,18 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.citykotlinproject.R
 import com.example.citykotlinproject.models.City
+import com.example.citykotlinproject.ui.city.CityFragment
+import com.example.citykotlinproject.ui.favorites.FavoriteFragment
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
-import kotlinx.android.synthetic.main.custom_dialog.view.*
 import kotlinx.android.synthetic.main.item_city.view.*
 import kotlinx.android.synthetic.main.item_empty.view.*
 
 
-class CityAdapter(private var listener: ClickListener): RecyclerView.Adapter<BaseViewHolder>() {
+class CityAdapter(private var listener: ClickListener, var type: Int): RecyclerView.Adapter<BaseViewHolder>() {
 
     private var array = mutableListOf<City>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -30,7 +32,7 @@ class CityAdapter(private var listener: ClickListener): RecyclerView.Adapter<Bas
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (array.count() == 0) VIEW_TYPE_EMPTY
+        return if (array.count() == 0) VIEW_TYPE_EMPTY_FAVORITE
         else VIEW_TYPE_DATA
     }
 
@@ -49,8 +51,9 @@ class CityAdapter(private var listener: ClickListener): RecyclerView.Adapter<Bas
         }
     }
 
-    private fun setupEmptyViewHolder(holder: EmptyViewHolder) {
-        holder.bind("У вас нет данных в избранном", R.drawable.ic_star)
+    fun setupEmptyViewHolder(holder: EmptyViewHolder) {
+        if (type == favoriteFragment) holder.bind("У вас нет данных в избранном", R.drawable.ic_star)
+        else if (type == cityFragment) holder.bind("Начните поиск города !", R.drawable.ic_search)
     }
 
     fun addItems(item: MutableList<City>){
@@ -68,8 +71,11 @@ class CityAdapter(private var listener: ClickListener): RecyclerView.Adapter<Bas
     }
 
     companion object {
-        val VIEW_TYPE_EMPTY = 1
+        val VIEW_TYPE_EMPTY_FAVORITE = 1
         val VIEW_TYPE_DATA = 2
+
+        val favoriteFragment = 0
+        val cityFragment = 1
     }
 }
 
