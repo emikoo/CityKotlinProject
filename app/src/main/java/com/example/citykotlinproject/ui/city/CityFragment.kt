@@ -103,8 +103,7 @@ class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
         val dialog = alert.create()
         positive_btn.text = "YES"
         negative_btn.text = "NO"
-        alert.setView(view)
-            .setCustomTitle(title_dialog)
+        alert.setView(view).setCustomTitle(title_dialog)
             .setCancelable(false)
         positive_btn.setOnClickListener {
 
