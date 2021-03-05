@@ -14,15 +14,15 @@ import com.example.citykotlinproject.R
 import com.example.citykotlinproject.models.City
 import com.example.citykotlinproject.ui.city.adapter.CityAdapter
 import com.example.citykotlinproject.ui.city.adapter.CityAdapter.Companion.cityFragment
-import com.example.citykotlinproject.ui.city.adapter.EmptyViewHolder
 import com.example.citykotlinproject.ui.main.MainRepository
 import kotlinx.android.synthetic.main.custom_dialog.*
+import kotlinx.android.synthetic.main.custom_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_city.*
 
 
 interface RequestResult {
-    fun onFailure(fail: String)
-    fun onSuccess(result: MutableList<City>)
+    fun onFailure(t: Throwable)
+    fun <T> onSuccess(result: T)
 }
 
 class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
@@ -31,6 +31,7 @@ class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
 
     private lateinit var adapter: CityAdapter
     private lateinit var repository: MainRepository
+    private var cityArray: MutableList<City> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,12 +89,13 @@ class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
         })
     }
 
-    override fun onFailure(fail: String) {
+    override fun onFailure(t: Throwable) {
         Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onSuccess(result: MutableList<City>) {
-        adapter.addItems(result)
+    override fun <T> onSuccess(result: T) {
+        val array = result as MutableList<City>
+        adapter.addItems(array)
     }
 
     override fun OnItemLongClick(item: City) {
@@ -104,14 +106,14 @@ class CityFragment : Fragment(), RequestResult, CityAdapter.ClickListener {
         val alert = AlertDialog.Builder(requireContext())
         val view: View = layoutInflater.inflate(R.layout.custom_dialog, null)
         val dialog = alert.create()
-        positive_btn.text = "YES"
-        negative_btn.text = "NO"
+        view.positive_btn.text = "Yes"
+        view.negative_btn.text = "No"
         alert.setView(view).setCustomTitle(title_dialog)
             .setCancelable(false)
-        positive_btn.setOnClickListener {
-
+        view.positive_btn.setOnClickListener {
+            repository.insertCity(item)
         }
-        negative_btn.setOnClickListener {
+        view.negative_btn.setOnClickListener {
             dialog.dismiss()
         }
         alert.show()

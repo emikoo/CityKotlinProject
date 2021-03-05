@@ -17,7 +17,7 @@ class MainRepository(private val callback: RequestResult) {
         api.fetchCity(city).enqueue(object: Callback<MutableList<City>> {
 
             override fun onFailure(call: Call<MutableList<City>>, t: Throwable) {
-                return callback.onFailure(t.message.toString())
+                return callback.onFailure(t)
             }
 
             override fun onResponse(
@@ -25,7 +25,7 @@ class MainRepository(private val callback: RequestResult) {
                 response: Response<MutableList<City>>
             ) {
                 return if (response.body() != null) callback.onSuccess(response.body()!!)
-                else callback.onFailure("error")
+                else callback.onFailure(Throwable("error"))
             }
         })
     }
@@ -34,7 +34,7 @@ class MainRepository(private val callback: RequestResult) {
         api.fetchAll().enqueue(object: Callback<MutableList<City>> {
 
             override fun onFailure(call: Call<MutableList<City>>, t: Throwable) {
-                return callback.onFailure(t.message.toString())
+                return callback.onFailure(t)
             }
 
             override fun onResponse(
@@ -42,9 +42,17 @@ class MainRepository(private val callback: RequestResult) {
                 response: Response<MutableList<City>>
             ) {
                 return if (response.body() != null) callback.onSuccess(response.body()!!)
-                else callback.onFailure("error")
+                else callback.onFailure(Throwable("error"))
             }
         })
+    }
+
+    fun insertCity(data: City) {
+        database.insertCity(data)
+    }
+
+    fun deleteCity(data: City) {
+        database.deleteCity(data)
     }
 
     fun fetchFavoriteCity() {
